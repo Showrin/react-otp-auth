@@ -37,9 +37,6 @@ function App() {
           .confirm(otp)
           .then((result) => {
             setVerificationResult(result.user);
-            console.log(result.user, "User");
-            document.querySelector("label").textContent =
-              result.user.phoneNumber + " is verified.";
           })
           .catch((error) => {
             setError((preError) =>

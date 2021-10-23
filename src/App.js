@@ -7,12 +7,23 @@ import "./lib/highlightSyntax.css";
 function App() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationResult, setVerificationResult] = useState(null);
+  const [error, setError] = useState(null);
 
   const phoneNumberChangeHandler = (event) =>
     setPhoneNumber(event.target.value);
 
   const onVerifyButtonClickHandler = () => {
-    const recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha");
+    let recaptcha;
+
+    try {
+      recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha");
+    } catch (error) {
+      setError((preError) =>
+        preError
+          ? preError + "\n" + JSON.stringify(error, undefined, 4)
+          : JSON.stringify(error, undefined, 4)
+      );
+    }
 
     firebase
       .auth()
@@ -31,8 +42,19 @@ function App() {
               result.user.phoneNumber + " is verified.";
           })
           .catch((error) => {
-            console.log("Maraaaa");
+            setError((preError) =>
+              preError
+                ? preError + "\n" + JSON.stringify(error, undefined, 4)
+                : JSON.stringify(error, undefined, 4)
+            );
           });
+      })
+      .catch((error) => {
+        setError((preError) =>
+          preError
+            ? preError + "\n" + JSON.stringify(error, undefined, 4)
+            : JSON.stringify(error, undefined, 4)
+        );
       });
   };
 
@@ -55,11 +77,17 @@ function App() {
         Verify Phone Number
       </button>
       <div className="verification-result">
+        {error && (
+          <pre className="error">
+            <h2># Errors ----</h2>
+            {error}
+          </pre>
+        )}
         <pre
           dangerouslySetInnerHTML={{
-            __html: highlightSyntax(
+            __html: `<h2 class="result"># Result ----</h2>${highlightSyntax(
               JSON.stringify(verificationResult, undefined, 4)
-            ),
+            )}`,
           }}
         />
       </div>

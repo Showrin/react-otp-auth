@@ -1,14 +1,22 @@
+import { useState } from "react";
 import "./App.css";
 import firebase from "./config/firebase";
+import highlightSyntax from "./lib/highlightSyntax";
+import "./lib/highlightSyntax.css";
 
 function App() {
-  const handleOnClick = () => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [verificationResult, setVerificationResult] = useState(null);
+
+  const phoneNumberChangeHandler = (event) =>
+    setPhoneNumber(event.target.value);
+
+  const onVerifyButtonClickHandler = () => {
     const recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha");
-    const number = "+8801521328875";
 
     firebase
       .auth()
-      .signInWithPhoneNumber(number, recaptcha)
+      .signInWithPhoneNumber(phoneNumber, recaptcha)
       .then((res) => {
         const otp = prompt("Enter the OTP");
 
@@ -17,6 +25,7 @@ function App() {
         res
           .confirm(otp)
           .then((result) => {
+            setVerificationResult(result.user);
             console.log(result.user, "User");
             document.querySelector("label").textContent =
               result.user.phoneNumber + " is verified.";
@@ -30,9 +39,30 @@ function App() {
   return (
     <div className="App">
       <h1 className="App-header"> React OTP auth app</h1>
-      <label>Verifyinggggg</label>
-      <div id="recaptcha" />
-      <button onClick={handleOnClick}>Verify Phone Number</button>
+      <label>
+        <div className="input-label">
+          {" "}
+          Please, enter your phone number with country code (ex: +880)
+        </div>
+        <input
+          className="input-field"
+          value={phoneNumber}
+          onChange={phoneNumberChangeHandler}
+        />
+      </label>
+      <div id="recaptcha" className="recaptcha-field" />
+      <button className="submit-button" onClick={onVerifyButtonClickHandler}>
+        Verify Phone Number
+      </button>
+      <div className="verification-result">
+        <pre
+          dangerouslySetInnerHTML={{
+            __html: highlightSyntax(
+              JSON.stringify(verificationResult, undefined, 4)
+            ),
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -1,11 +1,49 @@
-.App {
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
   background-color: #282c34;
-  text-align: center;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.App {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.App-header {
+  font-size: 54px;
+  margin-top: 0;
+}
+
+.input-label {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.input-field {
+  font-size: 16px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.recaptcha-field > div {
+  margin-bottom: 20px;
+}
+
+.submit-button {
+  padding: 5px 10px;
+  font-weight: bold;
+}
+
+.verification-result {
+  overflow: hidden;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 5%);
+  margin-top: 30px;
 }

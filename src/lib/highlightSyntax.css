@@ -1,0 +1,23 @@
+pre {
+  padding: 20px;
+  overflow-x: auto;
+  margin: 0;
+}
+
+pre .string {
+  color: #ce8349;
+}
+
+pre .number {
+  color: #b5c884;
+}
+
+pre .boolean,
+pre .null {
+  color: #569cd6;
+}
+
+pre .null,
+pre .key {
+  color: #9cdcfe;
+}

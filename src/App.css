@@ -46,4 +46,15 @@ body {
   border-radius: 5px;
   background-color: rgba(255, 255, 255, 5%);
   margin-top: 30px;
+  font-size: 14px;
+}
+
+.error {
+  color: #e26363;
+  margin-top: 0;
+}
+
+.result {
+  color: #31c831;
+  margin-top: 0;
 }

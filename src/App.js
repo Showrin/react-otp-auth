@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import firebase from "./config/firebase";
 
 function App() {
+  const handleOnClick = () => {
+    const recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha");
+    const number = "+8801521328875";
+
+    firebase
+      .auth()
+      .signInWithPhoneNumber(number, recaptcha)
+      .then((res) => {
+        const otp = prompt("Enter the OTP");
+
+        if (otp == null) return;
+
+        res
+          .confirm(otp)
+          .then((result) => {
+            console.log(result.user, "User");
+            document.querySelector("label").textContent =
+              result.user.phoneNumber + " is verified.";
+          })
+          .catch((error) => {
+            console.log("Maraaaa");
+          });
+      });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="App-header"> React OTP auth app</h1>
+      <label>Verifyinggggg</label>
+      <div id="recaptcha" />
+      <button onClick={handleOnClick}>Verify Phone Number</button>
     </div>
   );
 }
